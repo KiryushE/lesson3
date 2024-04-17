@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 class="container mb-5">Ваш список книг:</h1>
+{% for book in books_list %}
+<div class="card container mb-3">
+    <h5 class="card-header">⭐️ID: {{ book.id }}</h5>
+    <div class="card-body">
+        <h5 class="card-title">Назва: {{ book.name }}</h5>
+        <p class="card-text">Статус: {{ book.status }}</p>
+        <a href="{{ url_for('book_id', id=book.id) }}" class="btn btn-primary">Детальніше</a>
+    </div>
+</div>
+{% endfor %}
+{% endblock %}
+

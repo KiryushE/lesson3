@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% set student = students|max(attribute="score") %}
+<h1 class="container mb-5">Бали учнів та їх кількість</h1>
+<ul class="list-group container">
+  <li class="list-group-item">SUM: {{ students|sum(attribute='score') }}</li>
+  <li class="list-group-item">LENGTH: {{ students|length }}</li>
+  <li class="list-group-item">mid score: {{ students|sum(attribute='score')/students|length }}</li>
+</ul>
+
+{% endblock %}

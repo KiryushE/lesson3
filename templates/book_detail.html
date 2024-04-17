@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="container mb-5">Це детальна сторінка про книгу</h1>
+
+<div class="card container mb-3">
+    <h5 class="card-header">⭐️ID: {{ book_detail.id }}</h5>
+    <div class="card-body">
+        <h5 class="card-title">Назва: {{ book_detail.name }}</h5>
+        <p class="card-text">Статус: {{ book_detail.status }}</p>
+<!--        <a href="#" class="btn btn-primary">Go somewhere</a>-->
+    </div>
+</div>
+{% endblock %}
