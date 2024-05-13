@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1 class="container mb-5">Login</h1>
+
+<form action="/login" method="post" class="container">
+    <div class="row mb-3">
+        <label for="inputEmail3" class="col-sm-2 col-form-label">Email</label>
+        <div class="col-sm-10">
+            <input name="email" type="email" class="form-control mb-3">
+        </div>
+
+        <label for="inputEmail3" class="col-sm-2 col-form-label">Password</label>
+        <div class="col-sm-10">
+            <input name="password" type="text" class="form-control mb-3">
+        </div>
+
+        <label for="inputEmail3" class="col-sm-2 col-form-label">Category</label>
+        <div class="form-floating">
+            <select name="category" class="form-select" id="floatingSelect" aria-label="Floating label select example">
+                {% for category in categories %}
+                <option value="{{ category.id }}">{{ category }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Login</button>
+</form>
+
+{% endblock %}>

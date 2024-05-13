@@ -1,6 +1,5 @@
-from flask import render_template, Flask
+from flask import render_template, Flask, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
-
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///blog.db'
 
@@ -36,7 +35,27 @@ def posts():
 @app.route('/posts/<int:id>')
 def post_by_id(id):
     post = Post.query.get_or_404(id)
-    return render_template('posts_detail.html', posts=post)
+    return render_template('posts_detail.html', post=post)
+
+
+@app.route('/posts/category/<int:category_id>')
+def posts_by_category(category_id):
+    posts_category = Post.query.filter_by(category_id=category_id)
+    category_name = Category.query.get_or_404(category_id)
+    return render_template('posts_by_category.html', posts=posts_category,  category=category_name)
+
+
+@app.route('/posts/add', methods=['GET', 'POST'])
+def posts_add():
+    categories_list = Category.query.all()
+    if request.method == 'POST':
+        print(request.form)
+        post = Post(title=request.form['title'], content=request.form['content'],
+                    author=request.form['author'], category_id=int(request.form['category']))
+        db.session.add(post)
+        db.session.commit()
+        return redirect(url_for('posts'))
+    return render_template('add_post.html', categories=categories_list)
 
 
 @app.route('/categories')
