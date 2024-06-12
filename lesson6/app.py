@@ -14,7 +14,7 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 
 
-class User(db.Model):
+class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     first_name = db.Column(db.String(50), nullable=True)
     last_name = db.Column(db.String(50), nullable=True)
@@ -30,17 +30,28 @@ def load_user(user_id):
     return User.query.get(user_id)
 
 
-@app.route('register_ok')
+@app.route('/register_ok')
 def register_ok():
     return '<h1>Register ok</h1>'
 
 
-@app.route('login_ok')
-def register_ok():
+@app.route('/login_ok')
+def login_ok():
     return '<h1>Login ok</h1>'
 
 
-@app.route('/signup', method=['GET', 'POST'])
+@app.route('/logout_ok')
+def logout_ok():
+    return '<h1>Logout ok</h1>'
+
+
+@app.route('/protected')
+@login_required
+def protected():
+    return '<h1>PROTECTED PAGE</h1>'
+
+
+@app.route('/signup', methods=['GET', 'POST'])
 def sign_up():
     if request.method == 'POST':
         first_name = request.form.get('first_name')
@@ -55,9 +66,9 @@ def sign_up():
     return render_template('sign_up.html')
 
 
-@app.route('/login', method=['GET', 'POST'])
+@app.route('/login', methods=['GET', 'POST'])
 def login():
-    if request.method == "POST":
+    if request.method == 'POST':
         email = request.form.get('email')
         password = request.form.get('password')
         user = User.query.filter_by(email=email).first()
@@ -66,6 +77,29 @@ def login():
         login_user(user)
         return redirect(url_for('login_ok'))
     return render_template('login.html')
+
+
+@app.route('/logout')
+def logout():
+    logout_user()
+    return redirect(url_for('logout_ok'))
+
+
+@app.route('/weather')
+@login_required
+def weather():
+    try:
+        result = requests.get('https://api.openweathermap.org/data/2.5/weather',
+                              params={'q': 'Lviv', 'appid': '05ffeac603c6aa58b2dd47b059a1cbb9', 'lang': 'ua',
+                                      'units': 'metric'})
+        data = result.json()
+
+        condition = data['weather'][0]['description']
+        temp = data['main']['temp']
+        # return 'ok'
+        return render_template('weather.html', condition=condition, temp=temp)
+    except:
+        return 'exeption'
 
 
 with app.app_context():
