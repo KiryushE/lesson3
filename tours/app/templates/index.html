@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block title %}Home{% endblock %}
+{% block content %}
+<h1 class="container mb-5">WELCOME TO TOURS, {{ current_user }}</h1>
+<div class="row">
+  {% for tour in tours %}
+    <div class="col-md-4">
+      <div class="card mb-4 rounded-3 shadow-sm">
+        <div class="card-header py-3">
+          <h4 class="my-0 fw-normal text-center">{{ tour.price }} грн</h4>
+        </div>
+        <div class="card-body">
+          <h6>{{ tour.country }}</h6>
+          <h1 class="card-title pricing-card-title">{{ tour }}</h1>
+          <ul class="list-unstyled mt-3 mb-4">
+            <h4>{{ tour.description }}</h4>
+            <li>Дата публикации: {{ tour.time.strftime("%H:%M (%d.%m.%Y)") }}</li>
+          </ul>
+          <button type="button" class="w-100 btn btn-lg btn-primary">Забронировать</button>
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+</div>
+
+
+{% endblock %}
